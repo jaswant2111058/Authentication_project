@@ -1,0 +1,26 @@
+{
+  "name": "student_record",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaswant2111058/backend-_project.git",
+    "dev": ""
+  },
+  "author": "jassi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaswant2111058/backend-_project/issues"
+  },
+  "homepage": "https://github.com/jaswant2111058/backend-_project#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.2",
+    "nodemon": "^2.0.20"
+  }
+}

@@ -1,0 +1,14 @@
+#divm
+{
+    padding: 25px 190PX;
+}
+
+#div2
+{   padding: auto;
+    background-color: rgb(12, 139, 174);
+    text-align: center;
+    height: 380px;
+    width: 350px;
+    padding: 10px;
+    border-color: black;
+}
