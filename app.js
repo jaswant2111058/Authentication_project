@@ -3,19 +3,21 @@ const app = express();
 app.use(express.json());
 const bcrypt = require("bcrypt");
 require("./connection/conn");
-const login = require("./model/login");
+// const login = require("./model/login");
 const nodemail = require("nodemailer");
 const signup = require("./model/signup");
 const cookiejk = require("cookie-parser");
 const auth = require("./middleware/auth");
-
+const bodyParser= require("body-parser")
 const jwt = require("jsonwebtoken");
 const key = "jassi";
 const etime = 1000*15*60;
 // const schema = require("./model/schema");
-app.use(cookieParser());
+app.use(cookiejk());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+
+
 // signup
 
 app.post("/signup", async (req, res) => {
@@ -76,7 +78,7 @@ app.post("/login", async (req, res) => {
 //password reset
 
 
-app.post("/password/reset", async (req, res) => {
+app.post("/password/reset",auth, async (req, res) => {
 
     try {
         const remail = req.body.email
@@ -97,7 +99,7 @@ app.post("/password/reset", async (req, res) => {
 //password reset token
 
 
-app.post("/password/reset/:token", async (req, res) => {
+app.post("/password/reset/:token",auth, async (req, res) => {
     const email = req.body.email || req.useremail;
 
     try {
@@ -153,7 +155,7 @@ app.post("/password/reset/:token", async (req, res) => {
 // user nickname get
 
 
-app.get("/user/nickname", async (req, res) => {
+app.get("/user/nickname",auth, async (req, res) => {
 
     
         try {
@@ -178,12 +180,12 @@ app.get("/user/nickname", async (req, res) => {
 // user nickname post
 
 
-app.post("/user/nickname", async (req, res) => {
+app.post("/user/nickname",auth, async (req, res) => {
 
     
         const newnickname = req.body.newnickname;
         
-      const nick  =  await User.updateOne({ email: req.useremail }, { nickname: newnickname })
+      const nick  =  await signup.updateOne({ email: req.useremail }, { nickname: newnickname })
         
     
         res.status(201).json({
@@ -197,7 +199,7 @@ app.post("/user/nickname", async (req, res) => {
 // admin delete email
 
 
-app.get("/admin/delete/:email", async (req, res) => {
+app.get("/admin/delete/:email",auth, async (req, res) => {
     try {
        const admin = await signup.findOne({ _id: req.userid });
         const user = await signup.findOne({ email: req.params.email });
@@ -222,7 +224,7 @@ app.get("/admin/delete/:email", async (req, res) => {
 // admin make admin email
 
 
-app.get("/admin/make_admin/:email", async (req, res) => {
+app.get("/admin/make_admin/:email",auth, async (req, res) => {
 
 
         const uemail = req.params.email;
@@ -244,16 +246,16 @@ app.get("/admin/make_admin/:email", async (req, res) => {
           
 
 
-app.get("/registration", async (req, res) => {
+// app.get("/registration", async (req, res) => {
 
-    try {
-        const user = new student(req.body);
-        const adnew = await user.save();
-        res.status(201).send(adnew);
-    } catch (e) {
-        res.status(400).send(e);
-    }
-})
+//     try {
+//         const user = new student(req.body);
+//         const adnew = await user.save();
+//         res.status(201).send(adnew);
+//     } catch (e) {
+//         res.status(400).send(e);
+//     }
+// })
 app.listen(8000, function () {
     console.log("Server is up");
 })
