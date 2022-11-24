@@ -78,7 +78,7 @@ app.post("/login", async (req, res) => {
 //password reset
 
 
-app.post("/password/reset",auth, async (req, res) => {
+app.post("/password/reset/:token",auth, async (req, res) => {
 
     try {
         const remail = req.body.email
@@ -99,7 +99,7 @@ app.post("/password/reset",auth, async (req, res) => {
 //password reset token
 
 
-app.post("/password/reset/:token",auth, async (req, res) => {
+app.post("/password/reset",auth, async (req, res) => {
     const email = req.body.email || req.useremail;
 
     try {
@@ -109,33 +109,36 @@ app.post("/password/reset/:token",auth, async (req, res) => {
           message: "user not found",
          });
       } else {
-     //   //token creation
-        const recovery_token = jwt.sign(
-          { email: user.email, id: user._id },
-          key
+        //token creation
+        const token = jwt.sign(
+          { email: user.email, id: user._id },key
         );
         let transporter = nodemail.createTransport({
-          service: "gmail",
+          host:"smtp.gmail.com",
+          port:465,
+          secure:true,
+          
+          //service: "gmail",
           auth: {
-            user: "jkstar0123@gmail.com",
-            password: "98********@Jk",
+            user: "jaswant2111058",
+            pass: "87*********@Jk"
           },
         });
         var detail = {
-          from: "jkstar0123@gmail.com",
+          from: "jaswant2111058@akgec.ac.in",
           to: email,
           subject: "password reset kardo yrr",
           html:
-            '<p>Click <a href="ip_address:8000/password/reset/' +
-            recovery_token +
-            '">here</a> to reset your password</p>',
+            `<p>Click <a href="localhost:8000/password/reset/${token}">here</a> to reset your password</p>`,
         };
         transporter.sendMail(detail, function (error, info) {
-          if (error) {
+          if (error) { 
 
             return res.status(500).json({
               error: "bhai kuchh sahi nhi chal raha life m",
-            });
+              info
+            })
+            ;
           } else {
         
             return res.status(201).json({
