@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const port = process.env.PORT || 8000
 app.use(express.json());
 const bcrypt = require("bcrypt");
 require("./connection/conn");
@@ -259,6 +260,6 @@ app.get("/admin/make_admin/:email",auth, async (req, res) => {
 //         res.status(400).send(e);
 //     }
 // })
-app.listen(8000, function () {
+app.listen(port, function () {
     console.log("Server is up");
 })
